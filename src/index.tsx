@@ -652,16 +652,16 @@ function generateSongIdeas(genre, theme) {
   
   // Generate concept ideas
   ideas.concepts = [
-    \`A \${genre.name.toLowerCase()} song about \${selectedTheme} from the perspective of someone who just experienced it\`,
-    \`An upbeat \${genre.name.toLowerCase()} track celebrating \${selectedTheme} with a positive message\`,
-    \`A reflective \${genre.name.toLowerCase()} ballad exploring the deeper meaning of \${selectedTheme}\`
+    `A ${genre.name.toLowerCase()} song about ${selectedTheme} from the perspective of someone who just experienced it`,
+    `An upbeat ${genre.name.toLowerCase()} track celebrating ${selectedTheme} with a positive message`,
+    `A reflective ${genre.name.toLowerCase()} ballad exploring the deeper meaning of ${selectedTheme}`
   ];
   
   // Generate first line ideas
   ideas.firstLines = [
-    \`When I think about \${selectedTheme}, I remember...\`,
-    \`There's something about \${selectedTheme} that makes me...\`,
-    \`In a world full of \${selectedTheme}, I found...\`
+    `When I think about ${selectedTheme}, I remember...`,
+    `There's something about ${selectedTheme} that makes me...`,
+    `In a world full of ${selectedTheme}, I found...`
   ];
   
   return ideas;
