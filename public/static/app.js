@@ -314,44 +314,77 @@ function displayGeneratedIdeas(ideas) {
     resultsDiv.innerHTML = `
         <div class="bg-gray-50 p-6 rounded-lg">
             <h4 class="text-xl font-bold mb-6 text-green-600">
-                <i class="fas fa-lightbulb mr-2"></i>Generated Song Ideas
+                <i class="fas fa-lightbulb mr-2"></i>Professional Song Ideas & Writing Prompts
             </h4>
             
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Column 1: Titles and Opening Lines -->
                 <div>
                     <h5 class="font-bold mb-3 text-purple-600">
-                        <i class="fas fa-tag mr-2"></i>Title Ideas
+                        <i class="fas fa-tag mr-2"></i>Professional Titles
                     </h5>
                     <ul class="space-y-2 mb-6">
-                        ${ideas.titles.map(title => `<li class="bg-white p-3 rounded shadow cursor-pointer hover:bg-gray-100 transition duration-200" onclick="copyToClipboard('${title}')">${title}</li>`).join('')}
+                        ${ideas.titles.slice(0, 5).map(title => `<li class="bg-white p-3 rounded shadow cursor-pointer hover:bg-gray-100 transition duration-200" onclick="copyToClipboard('${title}')" title="Click to copy">${title}</li>`).join('')}
                     </ul>
                     
                     <h5 class="font-bold mb-3 text-blue-600">
-                        <i class="fas fa-quote-left mr-2"></i>Opening Lines
+                        <i class="fas fa-quote-left mr-2"></i>Opening Line Strategies
                     </h5>
                     <ul class="space-y-2">
-                        ${ideas.firstLines.map(line => `<li class="bg-white p-3 rounded shadow cursor-pointer hover:bg-gray-100 transition duration-200" onclick="copyToClipboard('${line}')">${line}</li>`).join('')}
+                        ${ideas.firstLines.map(line => `<li class="bg-white p-3 rounded shadow text-sm">${line}</li>`).join('')}
                     </ul>
                 </div>
                 
+                <!-- Column 2: Concepts and Tips -->
                 <div>
                     <h5 class="font-bold mb-3 text-orange-600">
-                        <i class="fas fa-brain mr-2"></i>Concept Ideas
+                        <i class="fas fa-brain mr-2"></i>Song Concepts
                     </h5>
                     <ul class="space-y-2 mb-6">
-                        ${ideas.concepts.map(concept => `<li class="bg-white p-3 rounded shadow">${concept}</li>`).join('')}
+                        ${ideas.concepts.map(concept => `<li class="bg-white p-3 rounded shadow text-sm">${concept}</li>`).join('')}
                     </ul>
                     
-                    <h5 class="font-bold mb-3 text-red-600">
-                        <i class="fas fa-heart mr-2"></i>Themes to Explore
+                    ${ideas.genreSpecificTips ? `
+                    <h5 class="font-bold mb-3 text-indigo-600">
+                        <i class="fas fa-star mr-2"></i>Pro Tips
                     </h5>
-                    <div class="flex flex-wrap gap-2">
-                        ${ideas.themes.map(theme => `<span class="bg-white px-3 py-2 rounded shadow text-sm cursor-pointer hover:bg-gray-100 transition duration-200" onclick="exploreTheme('${theme}')">${theme}</span>`).join('')}
+                    <ul class="space-y-2">
+                        ${ideas.genreSpecificTips.map(tip => `<li class="bg-white p-3 rounded shadow text-sm">${tip}</li>`).join('')}
+                    </ul>
+                    ` : ''}
+                </div>
+                
+                <!-- Column 3: Writing Prompts and Themes -->
+                <div>
+                    ${ideas.writingPrompts ? `
+                    <h5 class="font-bold mb-3 text-teal-600">
+                        <i class="fas fa-pen-fancy mr-2"></i>Writing Exercises
+                    </h5>
+                    <ul class="space-y-2 mb-6">
+                        ${ideas.writingPrompts.map(prompt => `<li class="bg-white p-3 rounded shadow text-sm">${prompt}</li>`).join('')}
+                    </ul>
+                    ` : ''}
+                    
+                    <h5 class="font-bold mb-3 text-red-600">
+                        <i class="fas fa-heart mr-2"></i>Explore Themes
+                    </h5>
+                    <div class="space-y-2">
+                        ${ideas.themes.map(theme => `<span class="block bg-white px-3 py-2 rounded shadow text-sm cursor-pointer hover:bg-gray-100 transition duration-200" onclick="exploreTheme('${theme}')">${theme}</span>`).join('')}
                     </div>
                 </div>
             </div>
             
-            <div class="mt-8 text-center">
+            <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+                <h6 class="font-bold text-blue-800 mb-2">💡 How to Use These Ideas:</h6>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• <strong>Titles:</strong> Click to copy and use as inspiration or starting points</li>
+                    <li>• <strong>Concepts:</strong> Choose one that resonates and develop it into a full song</li>
+                    <li>• <strong>Opening Lines:</strong> Use these patterns with your own specific details</li>
+                    <li>• <strong>Writing Exercises:</strong> Complete these prompts to generate original material</li>
+                </ul>
+            </div>
+            
+            <div class="mt-6 text-center">
                 <button onclick="generateIdea()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 mr-4">
                     <i class="fas fa-sync-alt mr-2"></i>Generate New Ideas
                 </button>
