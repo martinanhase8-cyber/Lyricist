@@ -377,7 +377,7 @@ app.get('/', (c) => {
                         <i class="fas fa-music mr-3"></i>
                         LyricsCraft
                     </h1>
-                    <p class="text-xl mb-8">Master the Art of Songwriting - Learn Techniques, Explore Genres, Create Amazing Lyrics</p>
+                    <p class="text-xl mb-8">Master the Art of Songwriting - Learn Techniques, Explore Genres, Create Amazing Lyrics!</p>
                     <button onclick="scrollToSection('features')" class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
                         Start Your Journey <i class="fas fa-arrow-down ml-2"></i>
                     </button>
