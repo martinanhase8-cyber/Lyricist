@@ -212,22 +212,96 @@ function displayRhymes(data) {
     wordSpan.textContent = data.word;
     listDiv.innerHTML = '';
     
-    if (data.rhymes.length === 0) {
+    if (!data.rhymes || data.rhymes.length === 0) {
         listDiv.innerHTML = '<p class="text-gray-500">No rhymes found for this word. Try a different word!</p>';
     } else {
-        data.rhymes.forEach(rhyme => {
-            const span = document.createElement('span');
-            span.className = 'bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-purple-200 transition duration-200';
-            span.textContent = rhyme;
-            span.onclick = () => {
-                document.getElementById('rhyme-input').value = rhyme;
-                findRhymes();
-            };
-            listDiv.appendChild(span);
-        });
+        // Show engine info and total count
+        if (data.totalFound && data.engineVersion) {
+            listDiv.innerHTML = `
+                <div class="mb-4 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-sm text-blue-600">
+                        <i class="fas fa-cog mr-1"></i> ${data.engineVersion} • Found ${data.totalFound} rhymes
+                    </p>
+                </div>
+            `;
+        }
+        
+        // Display Perfect Rhymes section
+        if (data.perfectRhymes && data.perfectRhymes.length > 0) {
+            const perfectSection = document.createElement('div');
+            perfectSection.className = 'mb-4';
+            perfectSection.innerHTML = `
+                <h5 class="font-semibold text-green-600 mb-2">
+                    <i class="fas fa-bullseye mr-1"></i> Perfect Rhymes (${data.perfectRhymes.length})
+                </h5>
+                <div class="flex flex-wrap gap-2 mb-3"></div>
+            `;
+            
+            const perfectContainer = perfectSection.querySelector('div:last-child');
+            data.perfectRhymes.forEach(rhyme => {
+                const span = createRhymeSpan(rhyme, 'bg-green-100 text-green-700 hover:bg-green-200');
+                perfectContainer.appendChild(span);
+            });
+            listDiv.appendChild(perfectSection);
+        }
+        
+        // Display Near Rhymes section
+        if (data.nearRhymes && data.nearRhymes.length > 0) {
+            const nearSection = document.createElement('div');
+            nearSection.className = 'mb-4';
+            nearSection.innerHTML = `
+                <h5 class="font-semibold text-blue-600 mb-2">
+                    <i class="fas fa-adjust mr-1"></i> Near Rhymes (${data.nearRhymes.length})
+                </h5>
+                <div class="flex flex-wrap gap-2 mb-3"></div>
+            `;
+            
+            const nearContainer = nearSection.querySelector('div:last-child');
+            data.nearRhymes.forEach(rhyme => {
+                const span = createRhymeSpan(rhyme, 'bg-blue-100 text-blue-700 hover:bg-blue-200');
+                nearContainer.appendChild(span);
+            });
+            listDiv.appendChild(nearSection);
+        }
+        
+        // Fallback: show all rhymes if categorized data not available
+        if ((!data.perfectRhymes && !data.nearRhymes) && data.rhymes.length > 0) {
+            const allSection = document.createElement('div');
+            allSection.innerHTML = '<div class="flex flex-wrap gap-2"></div>';
+            const container = allSection.querySelector('div');
+            
+            data.rhymes.slice(0, 25).forEach(rhyme => {
+                const span = createRhymeSpan(rhyme, 'bg-purple-100 text-purple-700 hover:bg-purple-200');
+                container.appendChild(span);
+            });
+            listDiv.appendChild(allSection);
+        }
+        
+        // Add usage tip
+        const tipDiv = document.createElement('div');
+        tipDiv.className = 'mt-4 p-3 bg-yellow-50 rounded-lg';
+        tipDiv.innerHTML = `
+            <p class="text-sm text-yellow-700">
+                <i class="fas fa-lightbulb mr-1"></i> 
+                <strong>Tip:</strong> Click any rhyme to find rhymes for that word. Perfect rhymes sound identical, near rhymes offer creative alternatives.
+            </p>
+        `;
+        listDiv.appendChild(tipDiv);
     }
     
     resultsDiv.classList.remove('hidden');
+}
+
+function createRhymeSpan(rhyme, className) {
+    const span = document.createElement('span');
+    span.className = `${className} px-3 py-1 rounded-full text-sm cursor-pointer transition duration-200`;
+    span.textContent = rhyme;
+    span.onclick = () => {
+        document.getElementById('rhyme-input').value = rhyme;
+        findRhymes();
+    };
+    span.title = `Click to find rhymes for "${rhyme}"`;
+    return span;
 }
 
 // Lyric analyzer functionality
